@@ -1,0 +1,106 @@
+version: "3.3"
+
+services:
+  db:
+    container_name: db
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+  redis:
+    container_name: redis
+    image: redis:7.0
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+  web:
+    container_name: web
+    image: epicserve/django-base-site:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    command: sh -c "./manage.py migrate --noinput && ./manage.py runserver 0.0.0.0:8000"
+
+    volumes:
+      - .:/srv/app:cached
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - node
+      - db
+      - redis
+
+    environment:
+      USE_DOCKER: "on"
+      DJANGO_SETTINGS_MODULE: config.settings
+
+  worker:
+    container_name: worker
+    image: epicserve/django-base-site:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    command: sh -c "celery -A config worker -l info"
+
+    volumes:
+      - .:/srv/app:cached
+
+    depends_on:
+      - web
+
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings
+
+  node:
+    container_name: node
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    working_dir: /srv/app
+
+    command: sh -c "npm run dev"
+
+    volumes:
+      - .:/srv/app
+      - node_data:/srv/app/node_modules
+
+    ports:
+      - "3002:3000"
+
+    environment:
+      NODE_ENV: development
+
+  docs:
+    container_name: docs
+    image: epicserve/django-base-site:latest
+
+    command: sh -c "mkdocs serve --dev-addr 0.0.0.0:5000"
+
+    volumes:
+      - .:/srv/app:cached
+
+    ports:
+      - "5002:5000"
+
+    environment:
+      LIVE_RELOAD_SUPPORT: "true"
+      FAST_MODE: "true"
+
+    #profiles: ["docs"]
+
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  redis_data:
+  node_data:

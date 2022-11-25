@@ -1,0 +1,14 @@
+-r prod.in
+black
+django-debug-toolbar
+django-stubs
+djlint
+flake8
+ipdb
+isort
+mkdocs-include-markdown-plugin
+mkdocs-linkcheck
+mkdocs-material
+mkdocstrings[python]
+mypy
+pip-tools
