@@ -3,11 +3,23 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from django.shortcuts import render
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
+
+
+
+@login_required(login_url="/login/")
+def index_four(request):
+    context = {}# {'segment': 'index'}
+
+    html_template = loader.get_template('home/index.html')
+    return HttpResponse(html_template.render(context, request))
+
+
 
 
 @login_required(login_url="/login/")
@@ -16,6 +28,13 @@ def index(request):
 
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
+
+#
+#def home_page(request):
+#    context = {'segment': 'index'}
+#
+#    
+#    return render(request,'home/index-four.html')
 
 
 @login_required(login_url="/login/")

@@ -1,18 +1,20 @@
-FROM python:3.9
+FROM python:3.9-slim
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+WORKDIR destin
+EXPOSE 8000
 
-COPY requirements.txt .
+COPY new_requirements.txt .
 # install python dependencies
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r "new_requirements.txt"
 
-COPY . .
+#COPY . .
 
 # running migrations
-RUN python manage.py migrate
+#RUN python manage.py migrate
 
 # gunicorn
-CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
+CMD ["python", "manage.py", "runserver"]

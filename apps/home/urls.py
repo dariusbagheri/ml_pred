@@ -9,9 +9,11 @@ from apps.home import views
 urlpatterns = [
 
     # The home page
-    path('', views.index, name='home'),
+    path('', views.index, name='index_old'),
+    #path('', views.index_four, name='index'),
+    #path('', views.login, name='pages'),
 
     # Matches any html file
-    re_path(r'^.*\.*', views.pages, name='pages'),
+   re_path(r'^.*\.*', views.pages, name='pages'),
 
 ]

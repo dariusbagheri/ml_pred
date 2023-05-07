@@ -1,0 +1,76 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <body>
+  <script src="https://unpkg.com/gojs@2.2.19/release/go.js"></script>
+  <p>
+    This is a minimalist HTML and JavaScript skeleton of the GoJS Sample
+    <a href="https://gojs.net/latest/samples/minimal.html">minimal.html</a>. It was automatically generated from a button on the sample page,
+    and does not contain the full HTML. It is intended as a starting point to adapt for your own usage.
+    For many samples, you may need to inspect the
+    <a href="https://github.com/NorthwoodsSoftware/GoJS/blob/master/samples/minimal.html">full source on Github</a>
+    and copy other files or scripts.
+  </p>
+  <div id="allSampleContent" class="p-4 w-full">
+
+<div id="sample">
+  <!-- The DIV for the Diagram needs an explicit size or else we won't see anything.
+       This also adds a border to help see the edges of the viewport. -->
+  <div id="myDiagramDiv" style="border: 1px solid black; width: 400px; height: 400px; position: relative; -webkit-tap-highlight-color: rgba(255, 255, 255, 0);"><canvas tabindex="0" width="398" height="398" style="position: absolute; top: 0px; left: 0px; z-index: 2; user-select: none; touch-action: none; width: 398px; height: 398px;">This text is displayed if your browser does not support the Canvas HTML element.</canvas><div style="position: absolute; overflow: auto; width: 398px; height: 398px; z-index: 1;"><div style="position: absolute; width: 1px; height: 1px;"></div></div></div>
+  <p>
+    This isn't a truly <i>minimal</i> demonstration of <b>GoJS</b>,
+    because we do specify a custom Node template and turn on undo/redo support, but it's pretty simple.
+    The whole source for the sample is shown below if you click on the link.
+  </p>
+  <p>
+    This sample sets the <a href="../api/symbols/Diagram.html#nodeTemplate" target="api">Diagram.nodeTemplate</a>, with a <a href="../api/symbols/Node.html" target="api">Node</a> template that data binds both the text string and the shape's fill color.
+    For an overview of building your own templates and model data, see the <a href="../learn/index.html">Getting Started tutorial.</a>
+  </p>
+  <p>
+    Using the mouse and common keyboard commands, you can pan, select, move, copy, delete, undo, and redo.
+    On touch devices, use your finger to act as the mouse, and press and hold your finger stationary to bring up a context menu.
+    The default context menu supports most of the standard commands that are enabled at that time for the selected object.
+  </p>
+  <p>
+    For a more elaborate sample, supporting grouping and tooltips and custom context menus,
+    see the <a href="basic.html">Basic</a> sample.
+  </p>
+<p class="text-xs">GoJS version 2.2.19. Copyright 1998-2022 by Northwoods Software.</p></div>
+
+<script id="code">
+const myDiagram =
+  new go.Diagram("myDiagramDiv",  // create a Diagram for the HTML Div element
+    { "undoManager.isEnabled": true });  // enable undo & redo
+
+// define a simple Node template
+myDiagram.nodeTemplate =
+  new go.Node("Auto")  // the Shape will go around the TextBlock
+    .add(new go.Shape("RoundedRectangle",
+      { strokeWidth: 0, fill: "white" })  // no border; default fill is white
+      .bind("fill", "color"))  // Shape.fill is bound to Node.data.color
+    .add(new go.TextBlock(
+      { margin: 8, font: "bold 14px sans-serif", stroke: '#333' })  // some room around the text
+      .bind("text", "key"));  // TextBlock.text is bound to Node.data.key
+
+// but use the default Link template, by not setting Diagram.linkTemplate
+
+// create the model data that will be represented by Nodes and Links
+myDiagram.model = new go.GraphLinksModel(
+  [
+    { key: "Alpha", color: "lightblue" },
+    { key: "Beta", color: "orange" },
+    { key: "Gamma", color: "lightgreen" },
+    { key: "Delta", color: "pink" }
+  ],
+  [
+    { from: "Alpha", to: "Beta" },
+    { from: "Alpha", to: "Gamma" },
+    { from: "Beta", to: "Beta" },
+    { from: "Gamma", to: "Delta" },
+    { from: "Delta", to: "Alpha" }
+  ]);
+</script>
+
+    <p><a href="https://github.com/NorthwoodsSoftware/GoJS/blob/master/samples/minimal.html" target="_blank">View this sample page's source on GitHub</a></p></div>
+  </body>
+  </html>
