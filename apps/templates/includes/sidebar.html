@@ -6,22 +6,35 @@
     <div class="logo">
       <!--  <a href="javascript:void(0)" class="simple-text logo-mini"> CAPP </a>-->
       <a href="javascript:void(0)" class="simple-text logo-Normal">
-        CAPP ML Predictions
+        CAPP ML Forcasting
       </a>
     </div>
     <ul class="nav">
       <li class="{% if 'index' in segment %} active {% endif %}">
-        <a href="/">
+        <a href="/lstm.html">
           <i class="tim-icons icon-chart-pie-36"></i>
-          <p>Dashboard</p>
+          <p>LSTM</p>
+        </a>
+      </li>
+      <li class="{% if 'index' in segment %} active {% endif %}">
+        <a href="/conv_1d.html">
+          <i class="tim-icons icon-chart-pie-36"></i>
+          <p>CONV 1D</p>
+        </a>
+      </li>
+      <li class="{% if 'index' in segment %} active {% endif %}">
+        <a href="/dense_nn.html">
+          <i class="tim-icons icon-chart-pie-36"></i>
+          <p>Dense Neural Net</p>
         </a>
       </li>
       <li class="{% if 'icons' in segment %} active {% endif %}">
-        <a href="/">
+        <a href="/chat_window.html">
           <i class="tim-icons icon-atom"></i>
-          <p>Icons</p>
+          <p>ChatGPT Forecasts</p>
         </a>
       </li>
+      <!--
       <li class="{% if 'icons' in segment %} active {% endif %}">
         <a href="/icons.html">
           <i class="tim-icons icon-atom"></i>
@@ -39,31 +52,36 @@
           <i class="tim-icons icon-bell-55"></i>
           <p>Notifications</p>
         </a>
+      </li>-->
+
+      <li class="{% if 'tables' in segment %} active {% endif %}">
+        <a href="/tables.html">
+          <i class="tim-icons icon-bank"></i>
+          <p>Build and Delpoy</p>
+        </a>
       </li>
+
       <li class="{% if 'user' in segment %} active {% endif %}">
         <a href="/user.html">
           <i class="tim-icons icon-single-02"></i>
           <p>User Profile</p>
         </a>
       </li>
-      <li class="{% if 'tables' in segment %} active {% endif %}">
-        <a href="/tables.html">
-          <i class="tim-icons icon-puzzle-10"></i>
-          <p>Table List</p>
-        </a>
-      </li>
+      <!--
       <li class="{% if 'typography' in segment %} active {% endif %}">
         <a href="/typography.html">
           <i class="tim-icons icon-align-center"></i>
           <p>Typography</p>
         </a>
       </li>
+
       <li>
         <a href="/rtl.html">
           <i class="tim-icons icon-world"></i>
           <p>RTL Support</p>
         </a>
       </li>
+      -->
       <li>
         <a href="{% url 'login' %}">
           <i class="tim-icons icon-button-power"></i>

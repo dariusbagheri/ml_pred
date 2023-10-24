@@ -3,12 +3,28 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-import os, environ
+import os
+import environ
 
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, True)
 )
+
+
+import pymongo
+
+
+MONGODB_DB = 'predictions_made'      # Replace with your MongoDB database name
+
+# Create a MongoDB client
+
+CLIENT = pymongo.MongoClient(  'mongodb://%s:%s@127.0.0.1' % ('AzureDiamond', 'hunter2'))
+
+# Get a reference to your MongoDB database
+MONGODB = CLIENT[MONGODB_DB]
+
+os.environ.setdefault('DEVELOPMENT_MODE', 'TRUE')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -24,23 +40,30 @@ SECRET_KEY = env('SECRET_KEY', default='S#perS3crEt_007')
 DEBUG = env('DEBUG')
 
 # Assets Management
-ASSETS_ROOT =  "http://app.exelen.io/static/assets"  #os.getenv('ASSETS_ROOT', '/static/assets') 
+# os.getenv('ASSETS_ROOT', '/static/assets')
+ASSETS_ROOT = "http://app.exelen.io/static/assets"
 
 # load production server from .env
-ALLOWED_HOSTS        = ['localhost', 'localhost:85', '127.0.0.1', 'app.exelen.io','exelen.io', '34.86.120.141',       env('SERVER', default='127.0.0.1') ]
-CSRF_TRUSTED_ORIGINS = ['http://localhost:85', 'http://127.0.0.1', 'https://' + env('SERVER', default='127.0.0.1') ]
+ALLOWED_HOSTS = ['localhost', 'localhost:85', '127.0.0.1', 'app.exelen.io',
+                 'exelen.io', '34.86.120.141',       env('SERVER', default='127.0.0.1')]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:85', 'http://127.0.0.1',
+                        'https://' + env('SERVER', default='127.0.0.1')]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'chat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.home'  # Enable the inner home (home)
+    'apps.home',  # Enable the inner home (home)
+
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,7 +79,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
-TEMPLATE_DIR = os.path.join(CORE_DIR, "apps/templates")  # ROOT dir for templates
+TEMPLATE_DIR = os.path.join(
+    CORE_DIR, "apps/templates")  # ROOT dir for templates
+ASGI_APPLICATION = "core.asgi.application"
 
 TEMPLATES = [
     {
@@ -81,15 +106,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 if os.environ.get('DB_ENGINE') and os.environ.get('DB_ENGINE') == "mysql":
-    DATABASES = { 
-      'default': {
-        'ENGINE'  : 'django.db.backends.mysql', 
-        'NAME'    : os.getenv('DB_NAME'     , 'appseed_db'),
-        'USER'    : os.getenv('DB_USERNAME' , 'appseed_db_usr'),
-        'PASSWORD': os.getenv('DB_PASS'     , 'pass'),
-        'HOST'    : os.getenv('DB_HOST'     , 'localhost'),
-        'PORT'    : os.getenv('DB_PORT'     , 3306),
-        }, 
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('DB_NAME', 'appseed_db'),
+            'USER': os.getenv('DB_USERNAME', 'appseed_db_usr'),
+            'PASSWORD': os.getenv('DB_PASS', 'pass'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', 3306),
+        },
     }
 else:
     DATABASES = {
